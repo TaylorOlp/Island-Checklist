@@ -1,114 +1,118 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Island Closing Checklist</title>
-  <style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Island Closing & Solar Reference</title>
+<style>
+  :root{
+    --bg:#f7f7fb; --card:#ffffff; --text:#1f2530; --muted:#5b6577; --accent:#2f6fed; --border:#e4e7ee;
+  }
+  @media (prefers-color-scheme: dark){
     :root{
-      --bg:#f7f7fb; --card:#ffffff; --text:#1f2530; --muted:#5b6577; --accent:#2f6fed; --border:#e4e7ee;
+      --bg:#0e1116; --card:#151a22; --text:#e9edf5; --muted:#a7b0c3; --accent:#6da3ff; --border:#263145;
     }
-    @media (prefers-color-scheme: dark){
-      :root{
-        --bg:#0e1116; --card:#151a22; --text:#e9edf5; --muted:#a7b0c3; --accent:#6da3ff; --border:#263145;
-      }
-    }
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--text);font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Arial}
-    header{
-      position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--border);
-      padding:10px 16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between
-    }
-    .title{font-weight:700}
-    .controls{display:flex;gap:8px;flex-wrap:wrap}
-    button{
-      border:1px solid var(--border);background:var(--card);color:var(--text);
-      padding:8px 12px;border-radius:8px;cursor:pointer
-    }
-    main{max-width:900px;margin:18px auto;padding:0 16px 60px}
-    .card{
-      background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin:12px 0
-    }
-    h2{margin:0 0 8px 0;font-size:1.1rem}
-    details{border-top:1px dashed var(--border);padding-top:8px;margin-top:6px}
-    .item{display:flex;gap:10px;align-items:flex-start;padding:10px 8px;border-radius:10px}
-    .item:hover{background:rgba(127,127,127,.08)}
-    input[type="checkbox"]{width:22px;height:22px;margin-top:2px}
-    label{cursor:pointer}
-    .muted{color:var(--muted);font-size:.95rem}
-    .progress{
-      height:10px;background:var(--border);border-radius:999px;overflow:hidden;margin-top:6px
-    }
-    .bar{height:100%;width:0;background:var(--accent);transition:width .2s}
-    .footer-note{margin-top:6px;font-size:.85rem;color:var(--muted)}
-    .small{font-size:.95rem}
-    .section-header{display:flex;align-items:center;justify-content:space-between;gap:8px}
-  </style>
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Arial}
+  header{
+    background:var(--bg);border-bottom:1px solid var(--border);
+    padding:10px 16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between
+  }
+  .title{font-weight:700}
+  nav{display:flex;gap:8px;flex-wrap:wrap}
+  nav button{
+    border:1px solid var(--border);background:var(--card);color:var(--text);
+    padding:6px 12px;border-radius:8px;cursor:pointer
+  }
+  nav button.active{background:var(--accent);color:#fff}
+  main{max-width:900px;margin:18px auto;padding:0 16px 60px}
+  .card{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin:12px 0
+  }
+  h2{margin:0 0 8px 0;font-size:1.1rem}
+  details{border-top:1px dashed var(--border);padding-top:8px;margin-top:6px}
+  .item{display:flex;gap:10px;align-items:flex-start;padding:10px 8px;border-radius:10px}
+  input[type="checkbox"]{width:22px;height:22px;margin-top:2px}
+  label{cursor:pointer}
+  .muted{color:var(--muted);font-size:.95rem}
+  .progress{height:10px;background:var(--border);border-radius:999px;overflow:hidden;margin-top:6px}
+  .bar{height:100%;width:0;background:var(--accent);transition:width .2s}
+  .footer-note{margin-top:6px;font-size:.85rem;color:var(--muted)}
+  .small{font-size:.95rem}
+  .section-header{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  /* Solar Reference page */
+  .reference p, .reference li{font-size:0.95rem;margin-bottom:6px}
+  .reference h3{margin-top:1em}
+</style>
 </head>
 <body>
 <header>
-  <div class="title">🏝️ Island Closing Checklist</div>
-  <div class="controls">
-    <button id="expandAll">Expand all</button>
-    <button id="collapseAll">Collapse all</button>
-    <button id="clearAll">Clear checks</button>
-    <button onclick="window.print()">Print</button>
-  </div>
+  <div class="title">🏝️ Island Reference</div>
+  <nav>
+    <button id="tabChecklist" class="active">Closing Checklist</button>
+    <button id="tabReference">Solar Usage Sheet</button>
+  </nav>
 </header>
 
-<main id="app">
-  <!-- Cabin & Grounds -->
-  <section class="card" data-section="cabin">
-    <div class="section-header">
-      <h2>Cabin &amp; Grounds</h2>
-      <div class="progress" aria-hidden="true"><div class="bar"></div></div>
-    </div>
-    <div class="small muted">General shut‑down tasks around the cabins.</div>
-    <div id="cabin-list"></div>
-    <div class="footer-note">Note: one interior cabin door has “issues.” Make sure it’s fully shut.</div>
-  </section>
+<main>
+  <!-- Checklist Page -->
+  <div id="pageChecklist">
+    <!-- Checklist sections are injected here by JS -->
+  </div>
 
-  <!-- Cinderella -->
-  <section class="card" data-section="toilet">
-    <div class="section-header">
-      <h2>Cinderella Incineration Toilet — Turn Off &amp; Clean</h2>
-      <div class="progress" aria-hidden="true"><div class="bar"></div></div>
-    </div>
-    <details open>
-      <summary class="muted">How‑to steps (tap to toggle)</summary>
-      <ol class="small">
-        <li><strong>Check for waste:</strong> open lid; confirm bowl is empty of waste/liners.</li>
-        <li><strong>Run final burn cycle (if needed):</strong> place a new Cinderella liner, close lid, press <em>Start</em>. Let the cycle finish and cool fully (about 60–90 min).</li>
-        <li><strong>Empty ash:</strong> open front hatch, slide out ash container, empty to trash, wipe with a damp cloth, and reinstall.</li>
-        <li><strong>Wipe interior:</strong> lightly wipe bowl and lid with damp cloth or mild soap/water. <em>No bleach or harsh chemicals.</em></li>
-        <li><strong>Power off:</strong> switch off the toilet’s power at its wall switch or breaker.</li>
-        <li><strong>Secure:</strong> close lid (latch if present) and ensure the front hatch is fully closed.</li>
-      </ol>
-    </details>
-    <div id="toilet-list"></div>
-  </section>
-
-  <!-- Boathouse -->
-  <section class="card" data-section="boathouse">
-    <div class="section-header">
-      <h2>Boathouse (Shore)</h2>
-      <div class="progress" aria-hidden="true"><div class="bar"></div></div>
-    </div>
-    <div id="boathouse-list"></div>
-  </section>
-
-  <!-- Exit -->
-  <section class="card" data-section="exit">
-    <div class="section-header">
-      <h2>Exit</h2>
-      <div class="progress" aria-hidden="true"><div class="bar"></div></div>
-    </div>
-    <div id="exit-list"></div>
-  </section>
+  <!-- Solar Reference Page -->
+  <div id="pageReference" class="reference" style="display:none;">
+    <h2>Cabin Solar Usage Sheet</h2>
+    <p><em>Quick reference for what you can safely run with your 24 V lead-acid system.<br>
+    (8× Kyocera KC175GT panels = 1.4 kW array, OutBack FLEXmax 60 MPPT, 4× 6 V batteries in series.)</em></p>
+    <h3>System Specs</h3>
+    <ul>
+      <li>Array: 1,400 W max (8×175 W). Typical peak harvest sunny day: 0.8–1.1 kW.</li>
+      <li>Battery bank: 24 V, ~200–225 Ah → 4.8–5.4 kWh total; usable ~50% = ≥2.5 kWh.</li>
+      <li>Inverter: ~90% efficiency (≥10% losses).</li>
+    </ul>
+    <h3>Daytime Power Budget (Sunny)</h3>
+    <ul>
+      <li>While charging at ~500 W → ≥450 W AC continuous available without lowering SOC.</li>
+      <li>Near peak sun (~1.0–1.2 kW) → ≥900–1,050 W AC continuous while still ending full.</li>
+      <li>Keep average loads ≤ current solar input to avoid pulling from battery.</li>
+    </ul>
+    <h3>Night / Cloudy Budget (Battery Only)</h3>
+    <p>Usable energy = 2.5 kWh before 50% SOC.</p>
+    <ul>
+      <li>50 W → ~50 hrs</li>
+      <li>100 W → ~25 hrs</li>
+      <li>200 W → ~12 hrs</li>
+      <li>300 W → ~8 hrs</li>
+      <li>500 W → ~5 hrs</li>
+    </ul>
+    <p><strong>Tip:</strong> Keep average night load ≤ 200 W for long battery life.</p>
+    <h3>Safe Example Combos (AC, Inverter Losses Included)</h3>
+    <ul>
+      <li>Mini-fridge (80–100 W) + 6 LED bulbs (~54 W) + laptop (60 W) + Wi-Fi/router (10 W) → ~200–220 W</li>
+      <li>TV 32–40" (70–100 W) + fan (40 W) + 4 LEDs (36 W) + phone charging (10–20 W) → ~160–200 W</li>
+      <li>Daytime burst: microwave or power tool (700–1,200 W) OK short-term if average stays within solar input.</li>
+    </ul>
+    <h3>Rules of Thumb</h3>
+    <ul>
+      <li>Keep daytime average AC load ≤ solar input (watch OutBack "In" watts).</li>
+      <li>Aim to end day at 100% SOC; avoid <50% SOC for lead-acid.</li>
+      <li>Float mode limits watts—low 'In' with 100% SOC is normal.</li>
+      <li>Shade, dirt, or flat tilt reduce harvest—clean and tilt toward sun.</li>
+      <li>Small continuous AC loads can be wasteful; use DC where practical.</li>
+    </ul>
+    <h3>Battery Care (Lead-acid)</h3>
+    <ul>
+      <li>Ideal daily depth of discharge: 20–40% (max ~50%).</li>
+      <li>Resting voltage (1–2 hrs no load/charge): 25.6–25.8 V (full), 24.4–24.6 V (≥50%), 24.0 V (low—recharge soon).</li>
+      <li>Check water in flooded cells; keep terminals clean/tight.</li>
+    </ul>
+  </div>
 </main>
 
 <script>
-/* ----- Checklist data ----- */
+/* Checklist Data */
 const DATA = {
   cabin: [
     "Turn off LP gas tanks and move the middle lever to OFF.",
@@ -150,79 +154,91 @@ const DATA = {
   ]
 };
 
-/* ----- Render helpers ----- */
+/* Local Storage */
 const KEY = "islandChecklist_v2";
-const app = document.getElementById("app");
+function loadState(){ try{ return JSON.parse(localStorage.getItem(KEY))||{} }catch{return {}} }
+function saveState(s){ localStorage.setItem(KEY, JSON.stringify(s)) }
+function makeId(sec, i){ return `${sec}-${i}` }
 
-function makeId(section, idx){ return `${section}-${idx}`; }
-
-function loadState(){
-  try{ return JSON.parse(localStorage.getItem(KEY)) || {}; }
-  catch{ return {}; }
+/* Render Checklist */
+function renderChecklist(){
+  const container = document.getElementById("pageChecklist");
+  container.innerHTML = "";
+  Object.entries(DATA).forEach(([section, items]) => {
+    const secDiv = document.createElement("section");
+    secDiv.className = "card";
+    secDiv.dataset.section = section;
+    secDiv.innerHTML = `
+      <div class="section-header">
+        <h2>${section==="cabin"?"Cabin & Grounds":
+              section==="toilet"?"Cinderella Incineration Toilet":
+              section==="boathouse"?"Boathouse (Shore)":"Exit"}</h2>
+        <div class="progress"><div class="bar"></div></div>
+      </div>
+      ${section==="toilet" ? `<details><summary class="muted">How-to steps</summary>
+      <ol class="small">
+        <li>Check bowl is empty.</li>
+        <li>Run final burn cycle if needed; wait until cool.</li>
+        <li>Empty ash container, wipe, reinstall.</li>
+        <li>Wipe interior (no harsh chemicals).</li>
+        <li>Turn off power at breaker/switch.</li>
+        <li>Close lid and front hatch securely.</li>
+      </ol></details>` : ""}
+      <div id="${section}-list"></div>
+    `;
+    container.appendChild(secDiv);
+    renderSection(section);
+  });
 }
-function saveState(state){ localStorage.setItem(KEY, JSON.stringify(state)); }
 
 function renderSection(section){
   const listEl = document.getElementById(section+"-list");
   const state = loadState();
   const checks = state[section] || {};
   listEl.innerHTML = "";
-
-  DATA[section].forEach((text, i) => {
-    const id = makeId(section, i);
-    const wrapper = document.createElement("div");
-    wrapper.className = "item";
-    wrapper.innerHTML = `
-      <input type="checkbox" id="${id}" ${checks[id] ? "checked":""} />
-      <label for="${id}">${text}</label>
-    `;
-    listEl.appendChild(wrapper);
+  DATA[section].forEach((text,i)=>{
+    const id = makeId(section,i);
+    const div = document.createElement("div");
+    div.className = "item";
+    div.innerHTML = `<input type="checkbox" id="${id}" ${checks[id]?"checked":""} />
+                     <label for="${id}">${text}</label>`;
+    listEl.appendChild(div);
   });
-
-  updateProgress(section);
-  listEl.addEventListener("change", e => {
-    if(e.target.type === "checkbox"){
-      const s = loadState();
-      s[section] = s[section] || {};
-      s[section][e.target.id] = e.target.checked;
+  listEl.addEventListener("change", e=>{
+    if(e.target.type==="checkbox"){
+      const s=loadState();
+      s[section]=s[section]||{};
+      s[section][e.target.id]=e.target.checked;
       saveState(s);
       updateProgress(section);
     }
-  }, { once:true }); // attach once per render
+  });
+  updateProgress(section);
 }
 
 function updateProgress(section){
-  const card = document.querySelector(`section[data-section="${section}"]`);
-  const bar = card.querySelector(".bar");
+  const sec = document.querySelector(`section[data-section="${section}"]`);
   const total = DATA[section].length;
-  const state = loadState();
-  const checked = Object.values(state[section] || {}).filter(Boolean).length;
-  const pct = total ? Math.round((checked/total)*100) : 0;
-  bar.style.width = pct + "%";
-  card.querySelector(".bar").setAttribute("aria-valuenow", pct);
-  card.querySelector(".bar").title = pct + "% complete";
+  const checked = Object.values(loadState()[section]||{}).filter(Boolean).length;
+  sec.querySelector(".bar").style.width = (total?checked/total*100:0)+"%";
 }
 
-function renderAll(){
-  Object.keys(DATA).forEach(renderSection);
-}
-
-/* ----- Controls ----- */
-document.getElementById("clearAll").addEventListener("click", () => {
-  if(confirm("Clear all checkmarks?")){
-    localStorage.removeItem(KEY);
-    renderAll();
-  }
+/* Tab Switching */
+document.getElementById("tabChecklist").addEventListener("click",()=>{
+  document.getElementById("pageChecklist").style.display="";
+  document.getElementById("pageReference").style.display="none";
+  document.getElementById("tabChecklist").classList.add("active");
+  document.getElementById("tabReference").classList.remove("active");
 });
-document.getElementById("expandAll").addEventListener("click", () => {
-  document.querySelectorAll("details").forEach(d => d.open = true);
-});
-document.getElementById("collapseAll").addEventListener("click", () => {
-  document.querySelectorAll("details").forEach(d => d.open = false);
+document.getElementById("tabReference").addEventListener("click",()=>{
+  document.getElementById("pageChecklist").style.display="none";
+  document.getElementById("pageReference").style.display="";
+  document.getElementById("tabReference").classList.add("active");
+  document.getElementById("tabChecklist").classList.remove("active");
 });
 
-/* ----- Init ----- */
-renderAll();
+/* Init */
+renderChecklist();
 </script>
 </body>
 </html>
